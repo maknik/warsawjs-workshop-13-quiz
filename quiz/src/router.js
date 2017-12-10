@@ -4,6 +4,7 @@ import Intro from "./pages/Intro";
 import Game from "./pages/Game";
 import Layout from "./pages/Layout";
 import Won from "./pages/Won";
+import Settings from "./pages/Settings";
 
 Vue.use(Router);
 
@@ -28,7 +29,7 @@ const router = new Router({
 				{
 					path: '/settings',
 					name: 'settings',
-					component: Game
+					component: Settings
 				},
 				{
 					path: '/won',

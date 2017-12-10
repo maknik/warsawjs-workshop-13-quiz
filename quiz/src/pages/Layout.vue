@@ -5,6 +5,9 @@
 				<router-link to="/" class="header item">
 					Intro
 				</router-link>
+				<router-link :to="{name: 'game'}" class="header item">
+					Game
+				</router-link>
 				<router-link :to="{name: 'settings'}" class="header item">
 					Settings
 				</router-link>

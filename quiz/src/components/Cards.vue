@@ -6,8 +6,8 @@
 		</div>
 		<div class="extra content">
 			<div class="ui two buttons">
-				<div v-on:click="answer('True')" class="ui basic button">True</div>
-				<div v-on:click="answer('False')" class="ui basic button">False</div>
+				<div v-on:click="answer('True')" v-bind:class="question.correct_answer === 'True' ? 'green' : 'primary'" class="ui basic button">True</div>
+				<div v-on:click="answer('False')" v-bind:class="question.correct_answer === 'False' ? 'green' : 'primary'" class="ui basic button">False</div>
 			</div>
 		</div>
 	</div>

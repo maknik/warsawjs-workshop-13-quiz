@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App';
 import router from "./router";
+import store from "./store";
 import SuiVue from 'semantic-ui-vue';
 import "semantic-ui-css/semantic.min.css"
 
@@ -11,6 +12,7 @@ Vue.use(SuiVue);
 
 /* eslint-disable no-new */
 new Vue({
+  store,
   router,
   el: '#app',
   template: '<App/>',

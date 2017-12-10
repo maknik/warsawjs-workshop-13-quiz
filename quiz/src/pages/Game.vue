@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import axios from "axios";
+	import axios from "axios";
 	import Cards from "@/components/Cards";
 	import QuestionsList from "@/components/QuestionsList";
 	import ProgressBar from "@/components/ProgressBar";
@@ -33,7 +33,9 @@ import axios from "axios";
 	export default {
 		//cykl zycia. W momencie, ktorym komponent jest tworzony, wywolywana jest meroda created
 		created() {
-			const url = "https://opentdb.com/api.php?amount=5&type=boolean"
+			
+			const count = this.$store.state.questionsCount;
+			const url = `https://opentdb.com/api.php?amount=${count}&type=boolean`
 			axios.get(url)
 			.then(res => this.results = res.data.results)
 			.catch(err => console.error(err))

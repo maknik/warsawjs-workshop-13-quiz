@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Milionaire</title>
+	<script src="https://unpkg.com/vue"></script>
+	<script src="https://unpkg.com/semantic-ui-vue/dist/umd/semantic-ui-vue.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css"></link>
+</head>
+
+<body>
+	<div id="app">
+		<div class="ui text container grid" style="margin: 50px 0">
+			<div class="row">
+				<div class="column">
+					<sui-progress v-bind:percent="percent" indicating></sui-progress>
+				</div>
+			</div>
+			<div class="row">
+				<div class="six wide column">
+					<div class="ui vertical steps">
+						<div 
+							class="step" 
+							v-for="_, index in results"
+							v-bind:class="{active: index === current, completed: index < current}"
+						>
+							<i class="question icon"></i>
+							<div class="content">
+								<div class="title">Question {{ index + 1 }}</div>
+								<div class="description">Question for {{ (index + 1) * 100}}$</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ten wide column">
+					<div v-if="question" class="ui card one centered">
+						<div class="content">
+							<div>{{ question.question }}</div>
+						</div>
+						<div class="extra content">
+							<div class="ui two buttons">
+								<div 
+									v-on:click="answer('True')"
+									class="ui basic button">True</div>
+								<div 
+									v-on:click="answer('False')"
+									class="ui basic button">False</div>
+							</div>
+						</div>
+					</div>
+					<div v-else class="ui card one centered">
+						<div class="content">
+							<div class="header">You win!!!</div>
+						</div>
+						<div class="ui extra content">
+							<div class="ui two buttons">
+								<div class="ui basic primary button">Play again</div>
+								<div class="ui basic primary button">Scores</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		//uzywanie zewnetrznych komponentow definiujemy przed stworzeniem obiektu Vue
+		Vue.use(SemanticUIVue)
+		var app = new Vue({
+			el: '#app',
+			methods: {
+				answer(event) {
+					if (event === this.question.correct_answer) {
+						this.current +=1;
+					}
+					else {
+						alert("Wrong answer")
+					}
+				},
+			},
+			computed: {
+				question() {
+					return this.results[this.current];
+				},
+				length() {
+					return this.results.length;
+				},
+				percent() {
+					return (this.current / this.length) * 100;
+				}
+			},
+			data: {
+				current: 0,
+				results: [
+					{
+					"category": "Science: Computers", 
+					"type": "boolean", 
+					"difficulty": "medium", 
+					"question": "The HTML5 standard was published in 2014.", 
+					"correct_answer": "True", 
+					"incorrect_answers": [ "False" ]
+					 }, 
+					 { "category": "Entertainment: Video Games", 
+					 "type": "boolean", 
+					 "difficulty": "easy", 
+					 "question": "Pac- Man was invented by the designer Toru Iwatani while he was eating pizza.", 
+					 "correct_answer": "True", 
+					 "incorrect_answers": [ "False" ] 
+					 }, 
+					 { "category": "Entertainment: Video Games",
+					 "type": "boolean", 
+					 "difficulty": "easy", 
+					 "question": "Rebecca Chambers does not appear in any Resident Evil except for the original Resident Evil and the Gamecube remake.", 
+					 "correct_answer": "False",
+					  "incorrect_answers": [ "True" ] 
+					  }, 
+					  { "category": "Entertainment: Music", 
+					  "type": "boolean", 
+					  "difficulty": "easy", 
+					  "question": "Daft Punk originated in France.",
+					   "correct_answer": "True", 
+					   "incorrect_answers": ["False"]
+				}, {
+					"category": "Entertainment: Video Games", 
+					"type": "boolean", 
+					"difficulty": "medium", 
+					"question": "In Monster Hunter Generations, guild style is a type of hunting style.", "correct_answer": "True",
+					"incorrect_answers": ["False"]
+				}]
+			}
+		})
+	</script>
+</body>
+
+</html>

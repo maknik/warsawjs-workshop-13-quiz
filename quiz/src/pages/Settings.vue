@@ -7,8 +7,8 @@
 			</div>
 			<div class="extra content">
 				<div class="ui two buttons">
-					<div @click="less" class="ui primary button">Less</div>
-					<div @click="more" class="ui primary button">More</div>
+					<div @click="decrement" class="ui primary button">Less</div>
+					<div @click="increment" class="ui primary button">More</div>
 				</div>
 			</div>
 		</div>
@@ -16,19 +16,14 @@
 </template>
 
 <script>
+	import { mapMutations, mapGetters } from "vuex";
 	export default {
-		computed: {
-			count() {
-				return this.$store.state.questionsCount;
-			}
-		},
-		methods: {
-			more() {
-				this.$store.commit('increment');
-			},
-			less() {
-				this.$store.commit('decrement');
-			}
-		}
+		computed: mapGetters([
+			'count'
+		]),
+		methods: mapMutations([
+			'increment',
+			'decrement'
+		])
 	}
 </script>

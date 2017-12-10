@@ -4,8 +4,7 @@
 			<Question 
 				:active="index === current" 
 				:completed="index < current" 
-				:index="index">
-			</Question>
+				:index="index"></Question>
 		</template>
 	</div>
 </template>

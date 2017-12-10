@@ -7,7 +7,7 @@
 		</div>
 		<div class="row">
 			<div class="six wide column">
-				<questions-list :list="results" :current="current"></questions-list>
+				<questions-list :list="questions" :current="currentQuestion"></questions-list>
 			</div>
 			<div class="ten wide column">
 				<Cards 
@@ -29,16 +29,14 @@
 	import Cards from "@/components/Cards";
 	import QuestionsList from "@/components/QuestionsList";
 	import ProgressBar from "@/components/ProgressBar";
+	import {mapGetters} from "vuex";
 	//uzywanie zewnetrznych komponentow definiujemy przed stworzeniem obiektu Vue
 	export default {
 		//cykl zycia. W momencie, ktorym komponent jest tworzony, wywolywana jest meroda created
 		created() {
-			
-			const count = this.$store.state.questionsCount;
-			const url = `https://opentdb.com/api.php?amount=${count}&type=boolean`
-			axios.get(url)
-			.then(res => this.results = res.data.results)
-			.catch(err => console.error(err))
+			//dispatch do asynchronicznych akcji
+			this.$store.commit('reset');		
+			this.$store.dispatch('getQuestions');
 		},
 		//rejestracja komponentow z ktorych korzystamy w tym template
 		components: {
@@ -49,8 +47,9 @@
 		methods: {
 			checkAnswer(event) {
 				if (event === this.question.correct_answer) {
-					this.current += 1;
-					if (this.current === this.length) {
+					this.$store.commit('nextQuestion');
+					if (this.currentQuestion === this.length) {
+						this.$store.commit('reset');
 						this.$router.push('/won')
 					}
 				}
@@ -59,24 +58,14 @@
 				}
 			},
 		},
-		computed: {
-			question() {
-				return this.results[this.current];
-			},
-			length() {
-				return this.results.length;
-			},
-			percent() {
-				return this.length ? (this.current / this.length) * 100 : 0;
-			}
-		},
-		data() {
-			return {
-				current: 0,
-				results: [
-					]
-			}
-		}
+		computed: mapGetters([
+			'currentQuestion',
+			'questions',
+			'percent',
+			'length',
+			'question'
+		])
+		,
 	}
 
 </script>

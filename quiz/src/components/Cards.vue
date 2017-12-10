@@ -1,7 +1,8 @@
 <template>
 	<div v-if="question" class="ui card one centered">
 		<div class="content">
-			<div>{{ question.question }}</div>
+			<!-- v-html renderuje string jak html -->
+			<div v-html="question.question"></div>
 		</div>
 		<div class="extra content">
 			<div class="ui two buttons">

@@ -10,7 +10,14 @@
 				<questions-list :list="results" :current="current"></questions-list>
 			</div>
 			<div class="ten wide column">
-				<Cards v-on:answer="checkAnswer" :question="question"></Cards>
+				<Cards 
+					v-if="question"
+					v-on:answer="checkAnswer" 
+					:question="question">
+				</Cards>
+				<div v-else class="ui active inverted dimmer">
+					<div class="ui large text loader">Loading</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -18,11 +25,19 @@
 </template>
 
 <script>
+import axios from "axios";
 	import Cards from "@/components/Cards";
 	import QuestionsList from "@/components/QuestionsList";
 	import ProgressBar from "@/components/ProgressBar";
 	//uzywanie zewnetrznych komponentow definiujemy przed stworzeniem obiektu Vue
 	export default {
+		//cykl zycia. W momencie, ktorym komponent jest tworzony, wywolywana jest meroda created
+		created() {
+			const url = "https://opentdb.com/api.php?amount=5&type=boolean"
+			axios.get(url)
+			.then(res => this.results = res.data.results)
+			.catch(err => console.error(err))
+		},
 		//rejestracja komponentow z ktorych korzystamy w tym template
 		components: {
 			Cards,
@@ -50,51 +65,14 @@
 				return this.results.length;
 			},
 			percent() {
-				return (this.current / this.length) * 100;
+				return this.length ? (this.current / this.length) * 100 : 0;
 			}
 		},
 		data() {
 			return {
 				current: 0,
 				results: [
-					{
-						"category": "Science: Computers",
-						"type": "boolean",
-						"difficulty": "medium",
-						"question": "The HTML5 standard was published in 2014.",
-						"correct_answer": "True",
-						"incorrect_answers": ["False"]
-					},
-					{
-						"category": "Entertainment: Video Games",
-						"type": "boolean",
-						"difficulty": "easy",
-						"question": "Pac- Man was invented by the designer Toru Iwatani while he was eating pizza.",
-						"correct_answer": "True",
-						"incorrect_answers": ["False"]
-					},
-					{
-						"category": "Entertainment: Video Games",
-						"type": "boolean",
-						"difficulty": "easy",
-						"question": "Rebecca Chambers does not appear in any Resident Evil except for the original Resident Evil and the Gamecube remake.",
-						"correct_answer": "False",
-						"incorrect_answers": ["True"]
-					},
-					{
-						"category": "Entertainment: Music",
-						"type": "boolean",
-						"difficulty": "easy",
-						"question": "Daft Punk originated in France.",
-						"correct_answer": "True",
-						"incorrect_answers": ["False"]
-					}, {
-						"category": "Entertainment: Video Games",
-						"type": "boolean",
-						"difficulty": "medium",
-						"question": "In Monster Hunter Generations, guild style is a type of hunting style.", "correct_answer": "True",
-						"incorrect_answers": ["False"]
-					}]
+					]
 			}
 		}
 	}
